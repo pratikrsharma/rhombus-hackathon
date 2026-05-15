@@ -1,0 +1,21 @@
+name: myapp
+
+services:
+  myapp:
+    build: .
+    container_name: myapp-container
+    volumes: 
+      - ./mydata:/tmp/mydata
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+
+  nginx-proxy:
+    image: nginx
+    ports:
+      - 8080:8080
+    volumes:
+      - /nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - myapp
+    restart: unless-stopped
